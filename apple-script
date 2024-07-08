@@ -1,0 +1,21 @@
+-- Handler to send an SMS message
+on send_sms(phoneNumber, scheduledTime)
+	tell application "Messages"
+		set targetService to 1st account whose service type = SMS
+		set targetBuddy to participant phoneNumber of targetService
+		
+		-- Replace [time] with the scheduled time
+		set messageContent to "Dear Candidate, Your interview has been scheduled on Tuesday, 10th OCT at " & scheduledTime & " for Microsoft Club GIKI Inductions Fall’23. Venue: LH 4, 1st Floor, Academic Block. Kindly reach 10 minutes before your interview. Regards, Microsoft Club GIKI"
+		
+		send messageContent to targetBuddy
+	end tell
+end send_sms
+
+-- Handler to send SMS to selected candidates
+on send_sms_to_selected(phoneNumbers, scheduledTimes, selectedIndices)
+	repeat with i in selectedIndices
+		set phoneNumber to item i of phoneNumbers
+		set scheduledTime to item i of scheduledTimes
+		send_sms(phoneNumber, scheduledTime)
+	end repeat
+end send_sms_to_selected
